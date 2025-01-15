@@ -2,37 +2,11 @@ import json
 import requests
 from flask import Flask, render_template, jsonify, request
 import os
-import PIL.Image
-import google.generativeai as genai
-from dotenv import load_dotenv
-from typing import cast
+from extract_text import extract_text
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = './uploads'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-
-
-# Configure the Google Generative AI API
-load_dotenv()
-API_KEY = os.getenv("GOOGLE_API_KEY")
-if not API_KEY:
-    raise ValueError("API key not found. Set the 'GOOGLE_API_KEY' environment variable.")
-genai.configure(api_key=API_KEY)
-model = genai.GenerativeModel("gemini-1.5-flash")
-
-
-def extract_text(image):
-    # Process the image and generate text
-    prompt = "Convert the handwriting to text - make correction based on the context of extracted text (only give extracted text in respone nothing else)"
-
-    # Call the Generative AI model
-    try:
-        response = model.generate_content([prompt, image])
-        text_output = response.text
-    except Exception as e:
-        return jsonify({'error': f"AI processing failed: {str(e)}"}), 500
-
-    return text_output
 
 
 @app.route('/')
@@ -46,27 +20,21 @@ def upload_image():
         return jsonify({"error": "Missing files"}), 400
 
     # Save the uploaded file
-    file_q = request.files['question_image']
-    file_a = request.files['answer_image']
-    if file_q.filename == '' or file_q.filename == '':
-        return jsonify({'error': 'No file is selected'}), 400
+    file_paths = {}
 
-    file_path_question = os.path.join(app.config['UPLOAD_FOLDER'], file_q.filename)
-    file_path_answer = os.path.join(app.config['UPLOAD_FOLDER'], file_a.filename)
-    file_q.save(file_path_question)
-    file_a.save(file_path_answer)
+    #Check for empty filename
+    for file_key, file in request.files.items():
+        if file is None or file.filename == '':
+            return jsonify({'errpr': f"No fiel selected for {file_key}"}), 420
 
-    # Validate the image
-    try:
-        image_q = PIL.Image.open(file_path_question)
-        image_a = PIL.Image.open(file_path_answer)
-        image_q.verify()
-        image_a.verify()
-    except Exception:
-        return jsonify({'error': 'Uploaded file is not a valid image'}), 400
+        # Save the file and store the path
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+        file.save(file_path)
+        file_paths[file_key] = file_path
 
-    question_text = extract_text(image_q)
-    answer_text = extract_text(image_a)
+    # Extract text from the saved files
+    question_text = extract_text(file_paths['question_image'])
+    answer_text = extract_text(file_paths['answer_image'])
 
     # Get the evaluation parameter
     question_type = request.form.get('question_type')
