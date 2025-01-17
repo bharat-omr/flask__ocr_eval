@@ -57,15 +57,7 @@ def upload_image():
         word_count = "80-120 words"
 
     new_entry = {
-        "Class": class_level,
-        "Board": board,
-        "word_count": word_count,
-        "questions":[
-            {"ID": "S1_Q1", "Text": question_text}
-        ],
-        "answers":[
-            {"ID":"S1_Q1", "Text": answer_text}
-        ]
+        "user_answer": answer_text
     }
 
     # Debug Print
@@ -73,11 +65,11 @@ def upload_image():
 
     try:
         # Send rewuest
-        url = 'http://192.168.1.28:9000/evaluate'
+        url = 'http://192.168.1.24:9000/evaluate'
         evaluation_response = requests.post(
             url,
-            json=new_entry,  # Use 'json' for automatic JSON serialization
-            headers={'Content-Type': 'application/json'}  # Correct header format
+            json = new_entry,
+            headers = {'Content-Type': 'application/json'}
         )
 
         # Outpur dir exist
@@ -109,20 +101,17 @@ def upload_image():
             json.dump(existing_data, json_file, ensure_ascii=False, indent = 4)
 
         if evaluation_response.status_code != 200:
-            return jsonify({'error':'Failed to send request to external API',
-                            'details':evaluation_response.text}), 500
+            return jsonify({'error':'Failed to send request to external API', 'details':evaluation_response.text}), 500
 
         # Include the external API response in the final output
-        evaluation_result = evaluation_response.json()
-        evaluations = evaluation_result.get("evaluations", [])
-        for evaluation in evaluations:
-            feedback = evaluation["Evaluation"].get("Feedback")
-            score = evaluation["Evaluation"].get("Score")
-            print(f"\nFeedback: {feedback}\nScore: {score}\n")
+        feedback = evaluation_response.json().get("Feedback")
+        score = evaluation_response.json().get("Marks")
+        print(f"\nFeedback: {feedback}\nScore: {score}\n")
 
         return jsonify({"Feedback": feedback, "Score": score})
 
     except Exception as e:
+        print(f"unexpection has occurred {str(e)}")
         return jsonify({'error': f"An unexpected error occurred: {str(e)}"}), 500
 
 
