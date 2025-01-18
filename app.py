@@ -34,9 +34,11 @@ def upload_image():
 
     # Extract text from the saved files
     answer_text = extract_text(file_paths['answer_image'])
+    max_marks = request.form['max_marks']
 
     new_entry = {
-        "user_answer": answer_text
+        "user_answer": answer_text,
+        "max_marks": max_marks
     }
 
     # Debug Print

@@ -3,7 +3,9 @@ document.getElementById('qa-form').addEventListener('submit', async function(eve
 
   const formData = new FormData();
   const answerImage = document.getElementById('answer-image').files[0];
+  const maxMarks = document.getElementById('max-marks').value;
   formData.append('answer_image', answerImage);
+  formData.append('max_marks', maxMarks);
 
   const progressBarContainer = document.getElementById('progress-bar-container');
   const progressBar = document.getElementById('progress-bar');
