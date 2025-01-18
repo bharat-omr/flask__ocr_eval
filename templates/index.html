@@ -12,53 +12,27 @@
   <h1>Question and Answer Submission</h1>
   <form id="qa-form" method="POST" enctype="multipart/form-data">
 
-    <!-- Dropdown for Class -->
-    <label for="class">Class</label><br>
-    <select id="class" name="class" required>
-      <option value="" disabled selected>Select Class</option>
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-      <option value="6">6</option>
-      <option value="7">7</option>
-      <option value="8">8</option>
-      <option value="9">9</option>
-      <option value="10">10</option>
-      <option value="11">11</option>
-      <option value="12">12</option>
-    </select><br><br>
-
-    <!-- Dropdown for board -->
-    <label for="board">Board</label><br>
-    <select id="board" name="board" required>
-      <option value="CBSE">CBSE</option>
-      <option value="ICSE">ICSE</option>
-    </select><br><br>
-
-    <!-- Dropdown for Question Type -->
-    <label for="question-type">Question Type:</label><br>
-    <select id="question-type" name="question_type" required>
-      <option value="" disabled selected>Select Question Type</option>
-      <option value="1 Marker">1 Marker</option>
-      <option value="3 Marker">3 Marker</option>
-      <option value="4 Marker">4 Marker</option>
-      <option value="6 Marker">6 Marker</option>
-      <option value="10 Marker">10 Marker</option>
-    </select><br><br>
-
-    <!-- Dropdown for Question Image upload -->
-    <label for="question-image">Upload Question Image:</label><br>
-    <input type="file" id="question-image" name="question_image" accept="image/*" required><br><br>
-
-    <!-- Dropdown for Answer Image upload -->
+    <!-- Answer Image upload -->
     <label for="answer-image">Upload Answer Image:</label><br>
     <input type="file" id="answer-image" name="answer_image" accept="image/*" required><br><br>
 
     <button type="submit">Submit</button>
   </form>
 
+  <!-- Progress Bar -->
+  <div id="progress-bar-container" style="display: none; margin-top: 20px;">
+    <div id="progress-bar" style="height: 10px; background-color: #4caf50; width: 0%;"></div>
+    <p>Processing your request...</p>
+  </div>
+
+  <!-- Output Area 1: Extracted Text -->
+  <div id="text-output-area"
+    style="margin-top: 20px; padding: 10px; border: 1px solid #ccc; display: none; word-wrap: break-word; max-width: 100%;">
+    <h3>Extracted Text:</h3>
+    <div id="extracted-text" style="white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word;"></div>
+  </div>
+
+  <!-- Output Area 2: Extracted Text -->
   <div id="output-area"
     style="margin-top: 20px; padding: 10px; border: 1px solid #ccc; display: none; word-wrap: break-word; max-width: 100%;">
     <h3>Evaluation:</h3>

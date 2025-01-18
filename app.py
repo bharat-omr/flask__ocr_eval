@@ -16,7 +16,7 @@ def index():
 
 @app.route("/upload", methods = ['POST'])
 def upload_image():
-    if 'question_image' not in request.files or 'answer_image' not in request.files:
+    if 'answer_image' not in request.files:
         return jsonify({"error": "Missing files"}), 400
 
     # Save the uploaded file
@@ -33,28 +33,7 @@ def upload_image():
         file_paths[file_key] = file_path
 
     # Extract text from the saved files
-    question_text = extract_text(file_paths['question_image'])
     answer_text = extract_text(file_paths['answer_image'])
-
-    # Get the evaluation parameter
-    question_type = request.form.get('question_type')
-    class_level = request.form.get('class')
-    board = request.form.get("board")
-
-    # Define word limit
-    word_count_range = {
-        "1 Marker": "15-25 words",
-        "3 Marker": "30-80 words",
-        "4 Marker": "80-120 words",
-        "6 Marker": "150-200 words",
-        "10 Marker": "200-300 words",
-    }
-
-    # Get the word count
-    if question_type in word_count_range:
-        word_count = word_count_range[question_type]
-    else:
-        word_count = "80-120 words"
 
     new_entry = {
         "user_answer": answer_text
@@ -108,7 +87,12 @@ def upload_image():
         score = evaluation_response.json().get("Marks")
         print(f"\nFeedback: {feedback}\nScore: {score}\n")
 
-        return jsonify({"Feedback": feedback, "Score": score})
+        # Return the extracated text and Evaluation Resposne
+        return jsonify({
+            "Feedback": feedback,
+            "Score": score,
+            "ExtractedText": answer_text
+        })
 
     except Exception as e:
         print(f"unexpection has occurred {str(e)}")
