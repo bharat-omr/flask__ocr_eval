@@ -3,3 +3,6 @@ uploads/
 output/
 .env
 __pycache__/
+images/
+pdfs/
+preprocessing/
