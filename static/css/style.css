@@ -23,7 +23,7 @@ form {
   background-color: #2e3e4a;
   color: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 label {
@@ -32,12 +32,14 @@ label {
   font-weight: bold;
 }
 
-select, input[type="file"] {
-  width: 90%;
+input[type="file"] {
+  width: 100%;
   padding: 10px;
   margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  background-color: #1e2a35;
+  color: #ffffff;
 }
 
 button {
@@ -47,27 +49,50 @@ button {
   background-color: #4CAF50;
   color: white;
   font-size: 16px;
+  font-weight: bold;
   border: none;
   border-radius: 4px;
+  transition: background 0.3s ease-in-out;
 }
 
 button:hover {
-  background-color: #b4c000;
+  background-color: #3a8c40;
+  cursor: pointer;
 }
 
 /* Output Area Styling */
-#output-area {
+#output-area,
+#text-output-area {
   margin-top: 20px;
-  padding: 10px;
+  padding: 15px;
   border: 1px solid #ccc;
   background-color: #2e3e4a;
   color: white;
+  border-radius: 6px;
   display: none;
   word-wrap: break-word;
 }
 
-#server-response {
+#server-response,
+#extracted-text {
   white-space: pre-wrap;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  padding: 10px;
+  background-color: #1e2a35;
+  border-radius: 4px;
+}
+
+/* Progress Bar Styling */
+#progress-bar-container {
+  display: none;
+  margin-top: 20px;
+  text-align: center;
+}
+
+#progress-bar {
+  height: 10px;
+  background-color: #4caf50;
+  width: 0%;
+  border-radius: 5px;
 }

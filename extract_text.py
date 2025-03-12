@@ -11,7 +11,7 @@ API_KEY = os.getenv("GOOGLE_API_KEY")
 if not API_KEY:
     raise ValueError("API key not found. Set the GOOGLE_API_KEY in env variable")
 genai.configure(api_key = API_KEY)
-model = genai.GenerativeModel("gemini-1.5-flash")
+model = genai.GenerativeModel("gemini-2.0-flash")
 
 
 def extract_text(file_path):
